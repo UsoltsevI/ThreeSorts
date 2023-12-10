@@ -1,0 +1,9 @@
+Examples:
+- Option 1: ./ST.x all < Tests/Test2.txt
+- Option 2: ./ST.x all Tests/Test2ans.txt < Tests/Test2.txt
+- Option 3: ./ST.x heapsort < Tests/Test2.txt
+- Option 3: ./ST.x heapsort out < Tests/Test2.txt
+- Option 4: ./ST.x heapsort Tests/Test2ans.txt < Tests/Test2.txt
+- Option 4: ./ST.x heapsort out Tests/Test2ans.txt < Tests/Test2.txt
+- Option 7: sn=heapsort make test
+- Option 8: make testo sn=heapsort nt=2

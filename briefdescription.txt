@@ -1,0 +1,22 @@
+
+- Usage generation int data: make cgen
+
+- Usage option 1: ./ST.x all <data>
+- Usage option 2: ./ST.x all <file with ans> <data>
+
+- Usage option 3: ./ST.x <sort name> <out/none> <data>
+- Usage option 4: ./ST.x <sort name> <out/none> <file with ans> <data>
+Enter 'out' if with data output, do not enter anything if without
+
+- Usage option 5: make testall
+This option is for testing all sorts of all files from the Tests/
+- Usage option 6: make testallans
+This option is for testing all sorts of all files from the Tests/ and check answers
+
+- Usage option 7: sn=<sort name> make test
+This option is for testing <sn> sort of all files from the Tests/
+- Usage option 8: make testo sn=<sort name> nt=<test num>
+This option is for testing <sn> using a file from the Tests/ under the number <nt>
+
+- Sorting options: heapsort, inssort, introsort, qsort, pdqsort
+- to see usage examples, enter "make ems"

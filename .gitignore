@@ -1,0 +1,6 @@
+*.o
+*.x
+HeapSort/heapsort.o
+InsSort/inssort.o
+IntroSort/introsort.o
+PatDefQSort/pdqsort.o
