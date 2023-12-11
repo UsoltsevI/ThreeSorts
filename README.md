@@ -1,7 +1,7 @@
 # Main pionts
 * [Description](#description)
 * [Using](#using)
-* [Results and comparison](#results)
+* [Results and comparison](#results-and-comparison)
 * [Links](#links)
 
 # Decription
@@ -16,15 +16,15 @@ All the tests I have generated are in the Tests and yf folder. Each of these tes
 # Using
 All work with the program can be done from the ThreeSorts folder. To start working with the program, run make, it will compile all the necessary files.
 
-You can use each of the suggested sorts separately, or you can make static or dynamic libraries out of them using the command 'make lib<sort prefix><dyn/st>'.Sort prefix means heap, ins, intro, pdq or tim, dyn = dynamic, st = static. For example 'make libheapdyn' compiles libheapsort.so in HeapSort folder. Next, you can copy the header and .so file to the desired folder and use them if necessary.
+You can use each of the suggested sorts separately, or you can make static or dynamic libraries out of them using the command `make lib<sort prefix><dyn/st>`.Sort prefix means heap, ins, intro, pdq or tim, dyn = dynamic, st = static. For example `make libheapdyn` compiles libheapsort.so in HeapSort folder. Next, you can copy the header and .so file to the desired folder and use them if necessary.
 
-The test.c file was created in order to test all these sorts and compare. A brief description of its use is in the briefdescription.txt and examples are in the ems.txt. You do not need to write long names of these files every time to view the contents. The contents of the briefdescription.txt file are output to the terminal each time the 'make usage' command is run, and contents of the ems.txt are output to the terminal each time 'make ems' command is run. From the main one, the program from the test.c file takes the amount of data from the standard input, then the data itself and sorts them in ascending order as int numbers. You can also tell the program the file with the answers, and it will output OK if everything matches, or it will output cell numbers where there are discrepancies.
+The test.c file was created in order to test all these sorts and compare. A brief description of its use is in the briefdescription.txt and examples are in the ems.txt. You do not need to write long names of these files every time to view the contents. The contents of the briefdescription.txt file are output to the terminal each time the `make usage` command is run, and contents of the ems.txt are output to the terminal each time `make ems` command is run. From the main one, the program from the test.c file takes the amount of data from the standard input, then the data itself and sorts them in ascending order as int numbers. You can also tell the program the file with the answers, and it will output OK if everything matches, or it will output cell numbers where there are discrepancies.
 
 Input data format: <num of elem> <elem itself>. For the response verification data, the output format is the same.
 
 # Results and comparison
 ## Insertion sort
-The slowest sort is obviously the insertion sort The slowest sort is obviously insertion sort, because it has O(n^2) asymptotics. But it should be noted that on small arrays, insertion sort is the fastest and most efficient sorting. This is the reason why it is used in other algorithms when the amount of data falls below a certain threshold. TimSort, IntroSort, PatDefQsort apply it in their implementation. 
+The slowest sort is obviously the insertion sort The slowest sort is obviously insertion sort, because it has O(n<sup>2</sup>) asymptotics. But it should be noted that on small arrays, insertion sort is the fastest and most efficient sorting. This is the reason why it is used in other algorithms when the amount of data falls below a certain threshold. TimSort, IntroSort, PatDefQsort apply it in their implementation. 
 
 ## Heapsort
 HeapSort is the most memory-efficient, and at the same time has the asymptotics O(n logn). It is much faster than insertion sort and also does not require additional memory, except for allocating space for a variable for the swap function. But heapsort loses to qsort in time.
@@ -38,18 +38,19 @@ Pattern-defeating quicksort works effectively on data where there are many ident
 ## Timsort
 Perhaps the most effective sorting from the presented list. It uses inssort on small data and merge sort on large data. There is also a balancing algorithm added, which significantly increases the efficiency of merge sort. It is stable, thus having an advantage over the rest. It also works by the asymptotics of O(n log n) in the worst case, and O(n) in the best.
 
+
 Of all the proposed sorts, only Inssort and TimSort are stable. The stability of sorting allows you not to swap the same data, thereby performing fewer actions. This can also result when sorting a set by a specific element, when you need to preserve the previous order of sets matching a given element. So if you need it, I advise you to use TimSort. Of the well-known mergesort, it is also a stable algorithm, and it is used in the implementation of TimSort.
 
 ## What is the most universal sorting?
-In conclusion, I want to say that in my opinion the most convenient and effective sorting for most cases is TimSort.  It also loses time to the usual qsort on completely random data, but random data is very rare in life, because of this TimSort becomes more effective more often. In addition, under no circumstances will it work according to the asymptotics of O(n^2). For the same reason, this is the main sorting in Python and Java. 
+In conclusion, I want to say that in my opinion the most convenient and effective sorting for most cases is TimSort.  It also loses time to the usual qsort on completely random data, but random data is very rare in life, because of this TimSort becomes more effective more often. In addition, under no circumstances will it work according to the asymptotics of O(n<sup>2</sup>). For the same reason, this is the main sorting in Python and Java. 
 I should note that this TimSort implementation is on average less efficient than std::sort (asort) from C++. This is justified by the fact that the C++ language allows you to use templates, and thanks to this, the comparison function spends significantly less time. I think that if we rewrite this algorithm in C++ using its advantages, TimSort will become more efficient than std::sort. I will have this in the further elaboration of the task, since I have not yet learned the C++ language.
 
 # Links
-![Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
-![Heapsort](https://en.wikipedia.org/wiki/Heapsort)
-![Introsort](https://en.wikipedia.org/wiki/Introsort)
-![Pdqsort](https://arxiv.org/pdf/2106.05123v1.pdf)
-![TimSort](https://en.wikipedia.org/wiki/Timsort)
+[Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
+[Heapsort](https://en.wikipedia.org/wiki/Heapsort)
+[Introsort](https://en.wikipedia.org/wiki/Introsort)
+[Pattern-defeating quick sort](https://arxiv.org/pdf/2106.05123v1.pdf)
+[TimSort](https://en.wikipedia.org/wiki/Timsort)
 
 ### Postscript
 If you find a bug or have ideas to improve this program, please start a discussion. 
