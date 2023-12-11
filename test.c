@@ -7,6 +7,7 @@
 #include "InsSort/inssort.h"
 #include "IntroSort/introsort.h"
 #include "PatDefQSort/pdqsort.h"
+#include "TimSort/timsort.h"
 
 int cmp_int(const void *a, const void *b) {
     int *ai = (int *) a;
@@ -100,6 +101,9 @@ int main(int argc, char * *argv) {
     } else if (!strcmp(argv[1], "pdqsort")) {
         test_sort(data, len, &pdqsort, out, file_ans_name);
 
+    } else if (!strcmp(argv[1], "timsort")) {
+        test_sort(data, len, &timsort, out, file_ans_name);
+
     } else {
         printf("Invalid sort type\n");
         printf("Sorting options: heapsort, inssort, introsort, qsort, pdsqort\n");
@@ -113,11 +117,18 @@ int main(int argc, char * *argv) {
 int *read_data_int(FILE *file, size_t *len) {
     size_t res = 0;
     int *data = NULL;
-    assert(file);
+    
+    if (!file) {
+        fprintf(stderr, "Failure opening file <%p>\n", file);
+        abort();
+    }
 
     res = fscanf(file, "%lu", len);
 
-    assert(res == 1);
+    if (res != 1) {
+        fprintf(stderr, "Failure reading nata: It is impossible to read the data for len\n");
+        abort();
+    }
 
     data = (int *) calloc(*len, sizeof(int));
 
@@ -125,7 +136,7 @@ int *read_data_int(FILE *file, size_t *len) {
         res += fscanf(file, "%d", data + i);
 
     if (res != *len + 1) {
-        printf("failure reading data: <%lu> vs <%lu>\n", res, *len + 1);
+        fprintf(stderr, "failure reading data: <%lu readed elem> vs <%lu = len + 1>\n", res, *len + 1);
         return NULL;
     }
 
@@ -147,8 +158,12 @@ void test_sort(int *data, const size_t len, void (*sort)(void *, const size_t, c
         printf("\n");
     }
 
-    if (file_ans != NULL)
+    if (file_ans != NULL) {
         check_ans(file_ans, data, len);
+
+    } else {
+        printf("   -    | ");
+    }
 
     printf("execution time: %lf\n", diff(start, finish));
 }
@@ -156,23 +171,28 @@ void test_sort(int *data, const size_t len, void (*sort)(void *, const size_t, c
 void test_sort_all(int *data, const size_t len, const char *file_ans) {
     int *data_cpy = (int *) malloc(len * sizeof(int));
 
-    printf("HEAPSORT:\n");
+    printf("N = %lu\n", len);
+    printf("HEAPSORT:  | ");
     memcpy(data_cpy, data, len * sizeof(int));
     test_sort(data_cpy, len, &heapsort, 0, file_ans);
+    printf("-----------|---------|--------------------------\n");
 
-    printf("INSSORT:\n");
-    memcpy(data_cpy, data, len * sizeof(int));
-    test_sort(data_cpy, len, &inssort, 0, file_ans);
-
-    printf("INTROSORT:\n");
+    printf("INTROSORT: | ");
     memcpy(data_cpy, data, len * sizeof(int));
     test_sort(data_cpy, len, &introsort, 0, file_ans);
+    printf("-----------|---------|--------------------------\n");
 
-    printf("QSORT:\n");
+    printf("QSORT:     | ");
     memcpy(data_cpy, data, len * sizeof(int));
     test_sort(data_cpy, len, &qsort, 0, file_ans);
+    printf("-----------|---------|--------------------------\n");
 
-    printf("PDQSORT:\n");
+    printf("TIMSORT:   | ");
+    memcpy(data_cpy, data, len * sizeof(int));
+    test_sort(data_cpy, len, &timsort, 0, file_ans);
+    printf("-----------|---------|--------------------------\n");
+
+    printf("PDQSORT:   | ");
     memcpy(data_cpy, data, len * sizeof(int));
     test_sort(data_cpy, len, &pdqsort, 0, file_ans);
 
@@ -181,6 +201,7 @@ void test_sort_all(int *data, const size_t len, const char *file_ans) {
 
 void check_ans(const char *file_ans_name, int *data, const size_t len) {
     size_t len_ans = 0;
+    size_t num_incor = 0;
     FILE *file = fopen(file_ans_name, "r");
     int *data_ans = read_data_int(file, &len_ans);
     fclose(file);
@@ -188,10 +209,17 @@ void check_ans(const char *file_ans_name, int *data, const size_t len) {
     assert(len == len_ans);
 
     for (size_t i = 0; i < len; i++)
-        if (data_ans[i] != data[i])
-            printf("error: (data_ans[%lu] = %d) != (data[%lu] = %d)\n", i, data_ans[i], i, data[i]);
+        if (data_ans[i] != data[i]) {
+            fprintf(stderr, "error: (data_ans[%lu] = %d) != (data[%lu] = %d)\n", i, data_ans[i], i, data[i]);
+            num_incor++;
+        }
 
     free(data_ans);
 
-    printf("OK\n");
+    if (num_incor) {
+        printf("FAILURE | ");
+
+    } else {
+        printf("OK      | ");
+    }
 }

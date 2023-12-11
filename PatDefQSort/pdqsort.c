@@ -15,7 +15,7 @@
 #include "debug.c"
 #endif 
 
-static size_t THRESHOLD_TO_INSSORT = 8;
+static size_t THRESHOLD_TO_INSSORT = 32;
 
 static void swap(void *a, void *b, void * const keeper, const size_t size_elem);
 static void pdqsort_imp(void *mem, const size_t len, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
@@ -39,6 +39,9 @@ static void pdqsort_imp(void *mem, const size_t len, void *keeper, const size_t 
         printf("before partition:\n");
         pint_data(mem, len);
 #endif 
+        
+        size_t r_pos = random() % len;
+        swap(mem + (len - 1) * size_elem, mem + r_pos * size_elem, keeper, size_elem);
 
         partition(mem, len, &left_eq, &right_eq, keeper, size_elem, cmp);
 
@@ -70,7 +73,7 @@ static void partition(void *mem, const size_t len, size_t *left_eq, size_t *righ
     //printf("piot = %d, %lu\n", *((int *) pivot), len - 1); 
 
     while (left <= right) {
-        while (cmp(mem + left * size_elem, pivot) < 0)
+        while ((cmp(mem + left * size_elem, pivot) < 0) && (left < len - 1))
             left++; 
         
         while ((cmp(mem + right * size_elem, pivot) > 0) && (right > 0))
