@@ -46,11 +46,11 @@ In conclusion, I want to say that in my opinion the most convenient and effectiv
 I should note that this TimSort implementation is on average less efficient than std::sort (asort) from C++. This is justified by the fact that the C++ language allows you to use templates, and thanks to this, the comparison function spends significantly less time. I think that if we rewrite this algorithm in C++ using its advantages, TimSort will become more efficient than std::sort. I will have this in the further elaboration of the task, since I have not yet learned the C++ language.
 
 # Links
-[Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
-[Heapsort](https://en.wikipedia.org/wiki/Heapsort)
-[Introsort](https://en.wikipedia.org/wiki/Introsort)
-[Pattern-defeating quick sort](https://arxiv.org/pdf/2106.05123v1.pdf)
-[TimSort](https://en.wikipedia.org/wiki/Timsort)
+- [Insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
+- [Heapsort](https://en.wikipedia.org/wiki/Heapsort)
+- [Introsort](https://en.wikipedia.org/wiki/Introsort)
+- [Pattern-defeating quick sort](https://arxiv.org/pdf/2106.05123v1.pdf)
+- [TimSort](https://en.wikipedia.org/wiki/Timsort)
 
 ### Postscript
 If you find a bug or have ideas to improve this program, please start a discussion. 
