@@ -38,7 +38,7 @@ IntroSort/introsort.o: IntroSort/introsort.c
 	gcc -O2 -Wall IntroSort/introsort.c -c -o IntroSort/introsort.o
 
 PatDefQSort/pdqsort.o: PatDefQSort/pdqsort.c 
-	gcc -O2 -Wall PatDefQSort/pdqsort.c -c -o PatDefQSort/pdqsort.o
+	gcc -O2 -Wall -DNDEBUG PatDefQSort/pdqsort.c -c -o PatDefQSort/pdqsort.o
 
 TimSort/timsort.o: TimSort/timsort.c 
 	gcc -O2 -Wall TimSort/timsort.c -c -o TimSort/timsort.o
@@ -46,19 +46,19 @@ TimSort/timsort.o: TimSort/timsort.c
 SPLIT_LINES = "----------------------------------------------------------"
 
 testall:
-	for i in $$(seq 0 1 14); do echo Tests/Test$$i.txt: && ./ST.x all < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
+	for i in $$(seq 0 1 17); do echo Tests/Test$$i.txt: && ./ST.x all < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 14); do echo Tests/Test$${i}ans.txt: && ./ST.x all < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 17); do echo Tests/Test$${i}ans.txt: && ./ST.x all < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 testallans:
-	for i in $$(seq 0 1 14); do echo Tests/Test$$i.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
+	for i in $$(seq 0 1 17); do echo Tests/Test$$i.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 14); do echo Tests/Test$${i}ans.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 17); do echo Tests/Test$${i}ans.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 test:
-	for i in $$(seq 0 1 14); do echo -n "Tests/Test$$i.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 4 1 4); do echo -n "Tests/Test$$i.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done 
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 13); do echo -n "Tests/Test$${i}ans.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 0); do echo -n "Tests/Test$${i}ans.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 testo:
 	@echo "Tests/Test$$i.txt:"

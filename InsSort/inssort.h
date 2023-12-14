@@ -3,6 +3,6 @@
 
 void inssort(void * arr, const size_t len, const size_t size_elem, int (*cmp)(const void *, const void *));
 
-void inssort_k(void *arr, const size_t len, void *key_keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
+void inssort_vt(void *first, void *last, void *key_keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
 
 #endif //INSSORT_H_INCLUDED

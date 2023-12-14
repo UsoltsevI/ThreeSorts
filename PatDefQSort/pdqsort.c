@@ -1,163 +1,162 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "pdqsort.h"
 #include "../InsSort/inssort.h"
+#include "../HeapSort/heapsort.h"
 
 #include <assert.h>
 
-//#define PRT
 #ifndef NDEBUG
-#include "debug.c"
+#include "../debug.c"
 #endif
 
-#ifdef PRT
-#include "debug.c"
-#endif 
-
 static size_t THRESHOLD_TO_INSSORT = 32;
+static size_t MIN_DEPTH_TO_HEAPSORT_COND = 8;
 
+static size_t get_depth(const size_t len);
 static void swap(void *a, void *b, void * const keeper, const size_t size_elem);
-static void pdqsort_imp(void *mem, const size_t len, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
-static void partition(void *mem, const size_t len, size_t *left_eq, size_t *right_eq, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
+static void pdqsort_imp(void *mem, void *last, const size_t depth, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
+
+static void *mid(void *first, void *last, const size_t size_elem, int (*cmp)(const void *, const void *));
+static void *partition_right(void *first, void *last, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
+static void *partition_left (void *first, void *last, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *));
 
 void pdqsort(void *mem, const size_t len, const size_t size_elem, int (*cmp)(const void *, const void *)) {
     void *keeper = malloc(size_elem);
-    pdqsort_imp(mem, len, keeper, size_elem, cmp);
+    size_t depth = get_depth(len);
+    pdqsort_imp(mem, mem + len * size_elem, depth, keeper, size_elem, cmp);
     free(keeper);
 }
 
-static void pdqsort_imp(void *mem, const size_t len, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
-    if (len < THRESHOLD_TO_INSSORT) {
-        inssort_k(mem, len, keeper, size_elem, cmp);
+static void pdqsort_imp(void *first, void *last, const size_t depth, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    if (last - first < THRESHOLD_TO_INSSORT * size_elem) {
+        inssort_vt(first, last, keeper, size_elem, cmp);
+
+    } else if (depth == 0) {
+        heapsort(first, (last - first) / size_elem, size_elem, cmp);
 
     } else {
-        size_t left_eq  = 0;
-        size_t right_eq = 0;  
+        size_t threshold = (last - first) / 8;
+        swap(first, mid(first, last - size_elem, size_elem, cmp), keeper, size_elem);
+        void *q = partition_left (first, last, keeper, size_elem, cmp);
 
-#ifdef PRT
-        printf("before partition:\n");
-        pint_data(mem, len);
-#endif 
-        
-        size_t r_pos = random() % len;
-        swap(mem + (len - 1) * size_elem, mem + r_pos * size_elem, keeper, size_elem);
+        if ((depth < MIN_DEPTH_TO_HEAPSORT_COND) && ((last - q < threshold) || (q - first < threshold))) {
+            heapsort(first, (last - first) / size_elem, size_elem, cmp);
+            return;
+        }
 
-        partition(mem, len, &left_eq, &right_eq, keeper, size_elem, cmp);
+        void *p = partition_right(first, q, keeper, size_elem, cmp);
 
-#ifdef PRT
-        printf("after partition:\n");
-        printf("len = %lu, left_eq = %lu, right_eq = %lu\n", len, left_eq, right_eq);
-        pint_data(mem, len);
-        printf("\n");
-#endif 
-        assert(left_eq != -1);
-        assert(right_eq != -1);
-        assert(right_eq <= len);
-        assert(left_eq < len);
+        assert(p >= first);
+        assert(q <= last);
+        assert(p <= q);
+        assert(cmp(p, q) <= 0);
+        assert(check_part(first, (last - first) / size_elem, (p - first) / size_elem, (q - first) / size_elem, size_elem, cmp));
 
-        assert(check_part(mem, len, left_eq, right_eq, size_elem, cmp));
-
-        pdqsort_imp(mem, left_eq, keeper, size_elem, cmp);
-        pdqsort_imp(mem + right_eq * size_elem, len - right_eq, keeper, size_elem, cmp);
+        pdqsort_imp(q,  last, depth - 1, keeper, size_elem, cmp);
+        pdqsort_imp(first, p, depth - 1, keeper, size_elem, cmp);
     }
 }
 
-static void partition(void *mem, const size_t len, size_t *left_eq, size_t *right_eq, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
-    void *pivot = mem + (len - 1) * size_elem;
-    size_t left = 0;
-    size_t right = len - 2;
-    size_t l_eq = 0;
-    size_t r_eq = len - 1;
+static void *mid(void *first, void *last, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    if (last - size_elem <= first)
+        return first;
 
-    //printf("piot = %d, %lu\n", *((int *) pivot), len - 1); 
+    void *median = first + (last - first) / 2;
 
-    while (left <= right) {
-        while ((cmp(mem + left * size_elem, pivot) < 0) && (left < len - 1))
-            left++; 
-        
-        while ((cmp(mem + right * size_elem, pivot) > 0) && (right > 0))
-            right--;
-        
-        if (left >= right)
-            break;
+    assert(median < last  );
+    assert(first  < median);
 
-        assert(left < len - 1);
-        assert(right < len - 1);
-        
-        swap(mem + left * size_elem, mem + right * size_elem, keeper, size_elem);
+    if (cmp(first, last) < 0) {
+        if (cmp(last, median) <= 0) {
+            return last;
 
-        if (cmp(mem + left * size_elem, pivot) == 0) {
-            swap(mem + l_eq * size_elem, mem + left * size_elem, keeper, size_elem);
-            l_eq++;
+        } else {
+            if (cmp(first, median) < 0) {
+                return median;
+
+            } else {
+                return first;
+            }
         }
 
-        left++;
+    } else {
+        if (cmp(median, first) < 0) {
+            if (cmp(median, last) < 0) {
+                return last;
 
-        if (cmp(mem + right * size_elem, pivot) == 0) {
-            r_eq--;
-            swap(mem + r_eq * size_elem, mem + right * size_elem, keeper, size_elem);
+            } else {
+                return median;
+            }
+
+        } else {
+            return first;
         }
-
-        right--;
     }
 
-#ifdef PRT 
-    printf("in partition 1: left = %lu, right = %lu, l_eq = %lu, r_eq = %lu\n", left, right, l_eq, r_eq);
-    pint_data(mem, len);
-#endif
+    return median;
+}
 
-    if ((left != r_eq) && (cmp(mem + left * size_elem, pivot) == 0)) {
-        r_eq--;
-        swap(mem + r_eq * size_elem, mem + left * size_elem, keeper, size_elem);
+static void* partition_right(void *first, void *last, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    //in partition_right pivot is the last one
+    //also, it is obviously pivot from previous partition left
+    //which is in position q (last in this function)
+    void *lp = first - size_elem; void *rp = last;
+
+    if (lp + size_elem == rp)
+        return rp;
+
+    do { lp += size_elem; assert(lp <= last); } while (cmp(lp, last) < 0);
+    
+    if (lp == first) {
+        do { rp -= size_elem; assert(rp >= first); } while ((lp < rp) && (cmp(rp, last) >= 0));
+
+    } else {
+        do { rp -= size_elem; assert(rp >= first); } while (cmp(rp, last) >= 0);
     }
 
-    assert(left < len);
-
-    swap(mem + left * size_elem, pivot, keeper, size_elem);
-
-    right = left - 1;
-    left++; 
-
-#ifdef PRT 
-    printf("in partition 2: left = %lu, right = %lu, l_eq = %lu, r_eq = %lu\n", left, right, l_eq, r_eq);
-    pint_data(mem, len);
-#endif
-
-    for (size_t k = 0; k < l_eq; k++, right--) {
-        if ((k >= left) || (right == -1)) {
-            right = -1;
-            break;
-        }
-
-        assert(k < len);
-        assert(right != -1);
-
-        swap(mem + k * size_elem, mem + right * size_elem, keeper, size_elem);
+    while (lp < rp) {
+        swap(lp, rp, keeper, size_elem);
+        do { lp += size_elem; assert(lp <  last ); } while (cmp(lp, last) <  0);
+        do { rp -= size_elem; assert(rp >= first); } while (cmp(rp, last) >= 0);
     }
 
-    *left_eq = right + 1;
+    swap(last, lp, keeper, size_elem);
 
-#ifdef PRT 
-    printf("in partition 3:\n");
-    pint_data(mem, len);
-#endif 
+    return lp;
+}
 
-    for (size_t k = len - 2; k >= r_eq; k--, left++) {
-        if (k < *left_eq) {
-            left = len;
-            break;
-        }
+static void *partition_left(void *first , void *last, void *keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    //in partition_left pivot is the first one
+    //before calling partition left we swap the first element with the
+    //average value of the three of the first, median and last
+    void *lp = first; void *rp = last;
 
-        swap(mem + k * size_elem, mem + left * size_elem, keeper, size_elem);
+    do { rp -= size_elem; assert(rp >= first); } while (cmp(rp, first) > 0);
+
+    if (rp + size_elem == last) {
+        do { lp += size_elem; assert(lp <  last ); } while ((lp < rp) && (cmp(lp, first) <= 0));
+    
+    } else {
+        do { lp += size_elem; assert(lp <  last ); } while (cmp(lp, first) <= 0);
     }
 
-    *right_eq = left - 1;
+    while (lp < rp) {
+        swap(lp, rp, keeper, size_elem);
+        do { rp -= size_elem; assert(rp >= first); } while (cmp(rp, first) >  0);
+        do { lp += size_elem; assert(lp <  last ); } while (cmp(lp, first) <= 0);
+    }
+
+    swap(first, rp, keeper, size_elem);
+
+    return rp;
 }
 
 static void swap(void *a, void *b, void * const keeper, const size_t size_elem) {
     memcpy(keeper, a, size_elem);
-    memcpy(a, b, size_elem);
+    memcpy(a,      b, size_elem);
     memcpy(b, keeper, size_elem);
 }
 
@@ -168,4 +167,14 @@ size_t set_threshold_to_inssort_pdqsort(const size_t len) {
     size_t prev = THRESHOLD_TO_INSSORT;
     THRESHOLD_TO_INSSORT = len;
     return prev;
+}
+
+size_t set_min_depth_to_heapsort_cond_pdqsort(const size_t len) {
+    size_t prev = MIN_DEPTH_TO_HEAPSORT_COND;
+    MIN_DEPTH_TO_HEAPSORT_COND = len;
+    return prev;
+}
+
+static size_t get_depth(const size_t len) {
+    return (size_t) 2 * log2(len);
 }

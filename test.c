@@ -182,14 +182,14 @@ void test_sort_all(int *data, const size_t len, const char *file_ans) {
     test_sort(data_cpy, len, &introsort, 0, file_ans);
     printf("-----------|---------|--------------------------\n");
 
-    printf("QSORT:     | ");
-    memcpy(data_cpy, data, len * sizeof(int));
-    test_sort(data_cpy, len, &qsort, 0, file_ans);
-    printf("-----------|---------|--------------------------\n");
-
     printf("TIMSORT:   | ");
     memcpy(data_cpy, data, len * sizeof(int));
     test_sort(data_cpy, len, &timsort, 0, file_ans);
+    printf("-----------|---------|--------------------------\n");
+
+    printf("QSORT:     | ");
+    memcpy(data_cpy, data, len * sizeof(int));
+    test_sort(data_cpy, len, &qsort, 0, file_ans);
     printf("-----------|---------|--------------------------\n");
 
     printf("PDQSORT:   | ");
@@ -203,6 +203,13 @@ void check_ans(const char *file_ans_name, int *data, const size_t len) {
     size_t len_ans = 0;
     size_t num_incor = 0;
     FILE *file = fopen(file_ans_name, "r");
+
+    if (!file) {
+        fprintf(stderr, "Failure opening file <%s>:", file_ans_name);
+        perror(":");
+        return;
+    }
+
     int *data_ans = read_data_int(file, &len_ans);
     fclose(file);
 

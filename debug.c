@@ -9,8 +9,11 @@ void pint_data(void *arr, const size_t len) {
 	int *arrint = (int *) arr;
 
 	for (size_t i = 0; i < len; i++)
-		printf("%d ", *(arrint + i));
-		//printf("|%lu, %d| ", i, *(arrint + i));
+		//printf("%4d ", *(arrint + i));
+		printf("|%lu, %d| ", i, *(arrint + i));
+
+    /*for (size_t i = 0; i < len; i++)
+        printf("%4lu ", i);*/
 	
 	printf("\n");
 }

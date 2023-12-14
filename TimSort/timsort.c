@@ -14,7 +14,7 @@ static const size_t MIN_LEN_TO_MERGESORT = 64;
 //#define DEBUGTS //it is not a comment)
 
 struct subarray {
-    size_t beg;
+    void *beg;
     size_t size;
 };
 
@@ -28,9 +28,9 @@ struct subarr_stack {
 };
 
 static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int (*cmp)(const void *, const void *));
-static void timsort_merge(void *mem, const size_t size_elem, const size_t left, const size_t mid, const size_t right, int (*cmp)(const void *, const void *));
-static void timsort_blance(void *mem, const size_t size_elem, const size_t len, struct subarr_stack *stk, int (*cmp)(const void *, const void *));
-static void reverse(void *arr, const size_t first, const size_t last, void *keeper, const size_t size_elem);
+static void timsort_merge(void *left, void *mid, void *right, const size_t size_elem, int (*cmp)(const void *, const void *));
+static void timsort_blance(struct subarr_stack *stk, const size_t size_elem, int (*cmp)(const void *, const void *));
+static void reverse(void *first, void *last, void *keeper, const size_t size_elem);
 
 static size_t get_minrun(size_t n);
 
@@ -47,24 +47,13 @@ void timsort(void *mem, const size_t len, const size_t size_elem, int (*cmp)(con
     timsort_imp(mem, len, size_elem, cmp);
 }
 
-#ifdef DEBUGTS
-#include <assert.h>
-
-//this function exists to verify that the sorting is performed correctly at each step
-int check_array(void *mem, const size_t size_elem, const size_t left, const size_t right, int (*cmp)(const void *, const void *)) {
-    for (size_t i = left; i < right; i++) {
-        if (cmp(mem + i * size_elem, mem + (i + 1) * size_elem) > 0)
-            return NOT_SORTED;
-    }
-
-    return IS_INCREASES;
-}
-#endif
-
 static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int (*cmp)(const void *, const void *)) {
     size_t minrun = get_minrun(len);
-    size_t add_step = 0, cur_pos = 0;
-    size_t is_sorted = UNDEF_MONOTON;
+    size_t minrun_bytes = minrun * size_elem;
+    //size_t add_step = 0, cur_pos = 0;
+    void *add_step; void *cur_pos = mem;
+    void *right = mem + len * size_elem;
+    int is_sorted = UNDEF_MONOTON;
     void *keeper = malloc(size_elem);
 
     struct subarr_stack stk;
@@ -74,17 +63,17 @@ static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int
     //we create a stack for the maximum possible number of items at runtime
     new_stack(&stk, len / minrun + 1);
 
-    while (cur_pos < len) {
+    while (cur_pos < right) {
         add_step = cur_pos;
         is_sorted = UNDEF_MONOTON;
 
         //the last elements we add to the the last subarray
         //all arrays have len >= minrun
         //if array is sorted we continue until it is not
-        while ((add_step < len) && ((add_step > len - minrun) || (add_step - cur_pos < minrun) || (is_sorted != NOT_SORTED))) {
+        while ((add_step < right) && ((add_step > right - minrun_bytes) || (add_step - cur_pos < minrun_bytes) || (is_sorted != NOT_SORTED))) {
             //if the array isn't sirted, we do not need other checks and conditions
-            if ((is_sorted != NOT_SORTED) && (add_step + 1 < len)) {
-                int check_cmp = cmp(mem + add_step * size_elem, mem + (add_step + 1) * size_elem);
+            if ((is_sorted != NOT_SORTED) && (add_step + size_elem < right)) {
+                int check_cmp = cmp(add_step, add_step + size_elem);
 
                 if (is_sorted == UNDEF_MONOTON) {
                     if (check_cmp < 0) {
@@ -103,14 +92,14 @@ static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int
                 }
             }
             
-            add_step++;
+            add_step += size_elem;
         }
 
         if (is_sorted == IS_DECREASES)
-            reverse(mem, cur_pos, add_step - 1, keeper, size_elem);
+            reverse(cur_pos, add_step - size_elem, keeper, size_elem);
 
         if (is_sorted == NOT_SORTED)
-            inssort_k(mem + cur_pos * size_elem, add_step - cur_pos, keeper, size_elem, cmp);
+            inssort_vt(cur_pos, add_step, keeper, size_elem, cmp);
 
         subarr_x.beg = cur_pos;
         subarr_x.size = add_step - cur_pos;
@@ -118,7 +107,7 @@ static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int
 
         push_stack(&stk, &subarr_x);
 
-        timsort_blance(mem, size_elem, len, &stk, cmp);
+        timsort_blance(&stk, size_elem, cmp);
     }
 
     //emptying the stack
@@ -126,70 +115,65 @@ static void timsort_imp(void *mem, const size_t len, const size_t size_elem, int
         pop_stack(&stk, &subarr_x);
         pop_stack(&stk, &subarr_y);
 
-        timsort_merge(mem, size_elem, subarr_y.beg, subarr_x.beg, subarr_x.beg + subarr_x.size - 1, cmp);
+        timsort_merge(subarr_y.beg, subarr_x.beg, subarr_x.beg + subarr_x.size - size_elem, size_elem, cmp);
 
         subarr_y.size += subarr_x.size;
 
         push_stack(&stk, &subarr_y);
     } 
 
-#ifdef DEBUGTS
-    assert(check_array(mem, size_elem, 0, len - 1, cmp));
-#endif
-
     free(keeper);
     free(stk.data);
 }   
 
-static void timsort_merge(void *mem, const size_t size_elem, const size_t left, const size_t mid, const size_t right, int (*cmp)(const void *, const void *)) {
-    size_t len_copy = mid - left;
-    void *mem_copy = malloc(len_copy * size_elem);
-    size_t pos_copy = 0, pos_right = mid;
-    size_t first_run_elem = 0;
+static void timsort_merge(void *left, void *mid, void *right, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    size_t len_copy_byte = mid - left;
+    void *mem_copy = malloc(len_copy_byte);
+    //size_t pos_copy = 0, pos_right = mid;
+    void *pos_right = mid;
+    void *first_run_elem = NULL;
     int cmp_res = 0;
 
     //the calling function guarantees (right - mid) >= minrun > 0 and (mid - left) >= minrun > 0
-    memcpy(mem_copy, mem + left * size_elem, len_copy * size_elem);
+    memcpy(mem_copy, left, len_copy_byte);
+    void *pos_copy = mem_copy;
+    void *right_copy_bdr = mem_copy + len_copy_byte;
 
-    cmp_res = cmp(mem_copy + pos_copy * size_elem, mem + pos_right * size_elem);
+    cmp_res = cmp(pos_copy, pos_right);
 
-    for (size_t i = left; i < right + 1; i++) {
-        if ((pos_right > right) || ((pos_copy < len_copy) && (cmp_res <= 0))) {
+    for (void *i = left; i < right + size_elem; i += size_elem) {
+        if ((pos_right > right) || ((pos_copy < right_copy_bdr) && (cmp_res <= 0))) {
             first_run_elem = pos_copy;
  
             if (pos_right > right)
-                pos_copy = len_copy - 1;
+                pos_copy = right_copy_bdr - size_elem;
             
-            pos_copy++;
-            while ((pos_copy < len_copy) && ((cmp_res = cmp(mem_copy + pos_copy * size_elem, mem + pos_right * size_elem)) <= 0))
-                pos_copy++;
+            pos_copy += size_elem;
+            while ((pos_copy < right_copy_bdr) && ((cmp_res = cmp(pos_copy, pos_right)) <= 0))
+                pos_copy += size_elem;
         
-            memcpy(mem + i * size_elem, mem_copy + first_run_elem * size_elem, (pos_copy - first_run_elem) * size_elem);
-            i += pos_copy - first_run_elem - 1;
+            memcpy(i, first_run_elem, pos_copy - first_run_elem);
+            i += pos_copy - first_run_elem - size_elem;
 
         } else {
             first_run_elem = pos_right;
  
-            if (pos_copy >= len_copy)
+            if (pos_copy >= right_copy_bdr)
                 pos_right = right;
 
-            pos_right++;
-            while ((pos_right <= right) && ((cmp_res = cmp(mem_copy + pos_copy * size_elem, mem + pos_right * size_elem)) > 0))
-                pos_right++;
+            pos_right += size_elem;
+            while ((pos_right <= right) && ((cmp_res = cmp(pos_copy, pos_right)) > 0))
+                pos_right += size_elem;
             
-            memmove(mem + i * size_elem, mem + first_run_elem * size_elem, (pos_right - first_run_elem) * size_elem);
-            i += pos_right - first_run_elem - 1;
+            memmove(i, first_run_elem, pos_right - first_run_elem);
+            i += pos_right - first_run_elem - size_elem;
         }
     }
-
-#ifdef DEBUGTS
-    assert(check_array(mem, size_elem, left, right, cmp));
-#endif
 
     free(mem_copy);
 }
 
-static void timsort_blance(void *mem, const size_t size_elem, const size_t len, struct subarr_stack *stk, int (*cmp)(const void *, const void *)) {
+static void timsort_blance(struct subarr_stack *stk, const size_t size_elem, int (*cmp)(const void *, const void *)) {
     int loop_on = 1;
 
     while ((stk->size > 2) && (loop_on)) {
@@ -203,7 +187,7 @@ static void timsort_blance(void *mem, const size_t size_elem, const size_t len, 
 
         if ((subarr_z.size < subarr_y.size + subarr_x.size) || (subarr_y.size < subarr_x.size)) {
             if ((subarr_x.size < subarr_z.size) && (subarr_y.size < subarr_z.size) && (subarr_z.size > subarr_y.size + subarr_x.size)) {
-                timsort_merge(mem, size_elem, subarr_y.beg, subarr_x.beg, subarr_x.beg + subarr_x.size - 1, cmp);
+                timsort_merge(subarr_y.beg, subarr_x.beg, subarr_x.beg + subarr_x.size - size_elem, size_elem, cmp);
 
                 subarr_y.size += subarr_x.size;
 
@@ -211,7 +195,7 @@ static void timsort_blance(void *mem, const size_t size_elem, const size_t len, 
                 push_stack(stk, &subarr_y);
 
             } else {
-                timsort_merge(mem, size_elem, subarr_z.beg, subarr_y.beg, subarr_y.beg + subarr_y.size - 1, cmp);
+                timsort_merge(subarr_z.beg, subarr_y.beg, subarr_y.beg + subarr_y.size - size_elem, size_elem, cmp);
                 subarr_z.size += subarr_y.size; 
 
                 push_stack(stk, &subarr_z);
@@ -227,11 +211,13 @@ static void timsort_blance(void *mem, const size_t size_elem, const size_t len, 
     } 
 }
 
-static void reverse(void *arr, const size_t first, const size_t last, void *keeper, const size_t size_elem) {
-    for (size_t i = 0; i <= (last - first) / 2; i++) {
-        memcpy(keeper, arr + (i + first) * size_elem, size_elem);
-        memcpy(arr + (i + first) * size_elem, arr + (last - i) * size_elem, size_elem);
-        memcpy(arr + (last - i) * size_elem, keeper, size_elem);
+static void reverse(void *first, void *last, void *keeper, const size_t size_elem) {
+    void *l = first; void *r = last;
+    while (l < r) {
+        memcpy(keeper, l, size_elem);
+        memcpy(l, r, size_elem);
+        memcpy(r, keeper, size_elem);
+        l += size_elem; r -= size_elem;
     }
 }
 
@@ -246,6 +232,8 @@ static size_t get_minrun(size_t n) {
 
     return r + n;
 }
+
+
 
 //simple and fast stack functions
 //without unnecessary checks

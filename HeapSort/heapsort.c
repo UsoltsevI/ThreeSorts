@@ -41,8 +41,8 @@ static void sift_down(void *mem, const size_t cur_elem, const size_t first, void
 
 	//the following variables are used in order to reduce the number of multiplications
 	size_t next_elem = 2 * cur_elem + 1;
-	unsigned long long next_elem_add = next_elem * size_elem; 
-	unsigned long long cur_add = cur_elem * size_elem;
+	size_t next_elem_add = next_elem * size_elem; 
+	size_t cur_add = cur_elem * size_elem;
 
 	if ((next_elem + 1 <= first) && (cmp(mem + next_elem_add + size_elem, mem + next_elem_add) > 0)) {
 		next_elem     += 1;

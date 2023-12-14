@@ -32,12 +32,23 @@ void inssort(void *arr, const size_t len, const size_t size_elem, int (*cmp)(con
     free(key);
 }
 
-void inssort_k(void *arr, const size_t len, void *key_keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
-    size_t i = 0, pos = 0;
+static void *moveright_vt(void *first, void *key, void *last, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    for (void *i = first; i < last; i += size_elem) {
+        if (cmp(key, i) < 0) {     
+            memmove(i + size_elem, i, last - i);
 
-    for (i = 0; i < len; i++) { 
-        memcpy(key_keeper, arr + i * size_elem, size_elem);
-        pos = moveright(arr, key_keeper, i, size_elem, cmp);
-        memcpy(arr + pos * size_elem, key_keeper, size_elem);
+            return i;
+        }
+    }
+    
+    return last;
+}
+
+void inssort_vt(void *first, void *last, void *key_keeper, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    void *pos;
+    for (void *i = first; i < last; i += size_elem) { 
+        memcpy(key_keeper, i, size_elem);
+        pos = moveright_vt(first, key_keeper, i, size_elem, cmp);
+        memcpy(pos, key_keeper, size_elem);
     }
 }

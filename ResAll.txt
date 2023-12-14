@@ -1,362 +1,435 @@
+for i in $(seq 0 1 17); do echo Tests/Test$i.txt: && ./ST.x all Tests/Test${i}ans.txt < Tests/Test$i.txt && echo "----------------------------------------------------------"; done
 Tests/Test0.txt:
 N = 10
 HEAPSORT:  | OK      | execution time: 0.000002
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000015
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000010
+INTROSORT: | OK      | execution time: 0.000011
 -----------|---------|--------------------------
 TIMSORT:   | OK      | execution time: 0.000002
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000009
 -----------|---------|--------------------------
 PDQSORT:   | OK      | execution time: 0.000002
 ----------------------------------------------------------
 Tests/Test1.txt:
 N = 100
-HEAPSORT:  | OK      | execution time: 0.000014
+HEAPSORT:  | OK      | execution time: 0.000011
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000022
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000016
+INTROSORT: | OK      | execution time: 0.000018
 -----------|---------|--------------------------
 TIMSORT:   | OK      | execution time: 0.000010
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000010
+QSORT:     | OK      | execution time: 0.000014
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000007
 ----------------------------------------------------------
 Tests/Test2.txt:
 N = 32687
-HEAPSORT:  | OK      | execution time: 0.007075
+HEAPSORT:  | OK      | execution time: 0.007117
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.006798
+INTROSORT: | OK      | execution time: 0.005402
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.003243
+TIMSORT:   | OK      | execution time: 0.004114
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.004251
+QSORT:     | OK      | execution time: 0.003266
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.004466
+PDQSORT:   | OK      | execution time: 0.002699
 ----------------------------------------------------------
 Tests/Test3.txt:
 N = 999997
-HEAPSORT:  | OK      | execution time: 0.247663
+HEAPSORT:  | OK      | execution time: 0.261241
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.187945
+INTROSORT: | OK      | execution time: 0.198902
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.106705
+TIMSORT:   | OK      | execution time: 0.140391
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.147807
+QSORT:     | OK      | execution time: 0.105378
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.168866
+PDQSORT:   | OK      | execution time: 0.117681
 ----------------------------------------------------------
 Tests/Test4.txt:
 N = 100
-HEAPSORT:  | OK      | execution time: 0.000008
+HEAPSORT:  | OK      | execution time: 0.000009
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000017
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000012
+INTROSORT: | OK      | execution time: 0.000015
 -----------|---------|--------------------------
 TIMSORT:   | OK      | execution time: 0.000007
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000007
-----------------------------------------------------------
-Tests/Test5.txt:
-N = 1000
-HEAPSORT:  | OK      | execution time: 0.000105
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000118
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000083
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000067
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000054
-----------------------------------------------------------
-Tests/Test6.txt:
-N = 8267
-HEAPSORT:  | OK      | execution time: 0.001308
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000988
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000658
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000856
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.001073
-----------------------------------------------------------
-Tests/Test7.txt:
-N = 100
-HEAPSORT:  | OK      | execution time: 0.000008
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000016
 -----------|---------|--------------------------
 QSORT:     | OK      | execution time: 0.000011
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000007
+PDQSORT:   | OK      | execution time: 0.000006
+----------------------------------------------------------
+Tests/Test5.txt:
+N = 1000
+HEAPSORT:  | OK      | execution time: 0.000131
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000007
+INTROSORT: | OK      | execution time: 0.000134
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000086
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000097
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000033
+----------------------------------------------------------
+Tests/Test6.txt:
+N = 8267
+HEAPSORT:  | OK      | execution time: 0.001477
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.001269
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.001053
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000867
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.001520
+----------------------------------------------------------
+Tests/Test7.txt:
+N = 100
+HEAPSORT:  | OK      | execution time: 0.000012
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000020
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000010
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000015
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000009
 ----------------------------------------------------------
 Tests/Test8.txt:
 N = 30
-HEAPSORT:  | OK      | execution time: 0.000003
+HEAPSORT:  | OK      | execution time: 0.000004
 -----------|---------|--------------------------
 INTROSORT: | OK      | execution time: 0.000012
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000008
+TIMSORT:   | OK      | execution time: 0.000003
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000018
+QSORT:     | OK      | execution time: 0.000011
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000002
+PDQSORT:   | OK      | execution time: 0.000003
 ----------------------------------------------------------
 Tests/Test9.txt:
 N = 64000
-HEAPSORT:  | OK      | execution time: 0.011398
+HEAPSORT:  | OK      | execution time: 0.012297
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.009153
+INTROSORT: | OK      | execution time: 0.008906
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.005731
+TIMSORT:   | OK      | execution time: 0.008056
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.008439
+QSORT:     | OK      | execution time: 0.005798
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.010182
+PDQSORT:   | OK      | execution time: 0.010624
 ----------------------------------------------------------
 Tests/Test10.txt:
 N = 138000
-HEAPSORT:  | OK      | execution time: 0.027505
+HEAPSORT:  | OK      | execution time: 0.026339
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.021594
+INTROSORT: | OK      | execution time: 0.020962
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.012926
+TIMSORT:   | OK      | execution time: 0.017392
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.017976
+QSORT:     | OK      | execution time: 0.014095
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.025562
+PDQSORT:   | OK      | execution time: 0.026723
 ----------------------------------------------------------
 Tests/Test11.txt:
 N = 16032
-HEAPSORT:  | OK      | execution time: 0.002553
+HEAPSORT:  | OK      | execution time: 0.002572
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.002058
+INTROSORT: | OK      | execution time: 0.002026
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.001251
+TIMSORT:   | OK      | execution time: 0.001695
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.001754
+QSORT:     | OK      | execution time: 0.001396
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.002211
+PDQSORT:   | OK      | execution time: 0.002687
 ----------------------------------------------------------
 Tests/Test12.txt:
 N = 32032
-HEAPSORT:  | OK      | execution time: 0.005330
+HEAPSORT:  | OK      | execution time: 0.005391
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.004797
+INTROSORT: | OK      | execution time: 0.004489
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.002520
+TIMSORT:   | OK      | execution time: 0.003426
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.003434
+QSORT:     | OK      | execution time: 0.002478
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.003797
+PDQSORT:   | OK      | execution time: 0.002699
 ----------------------------------------------------------
 Tests/Test13.txt:
 N = 32000
-HEAPSORT:  | OK      | execution time: 0.000537
+HEAPSORT:  | OK      | execution time: 0.000546
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.002412
+INTROSORT: | OK      | execution time: 0.002004
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000735
+TIMSORT:   | OK      | execution time: 0.000089
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000102
+QSORT:     | OK      | execution time: 0.000793
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000805
+PDQSORT:   | OK      | execution time: 0.000093
 ----------------------------------------------------------
 Tests/Test14.txt:
 N = 32000
-HEAPSORT:  | OK      | execution time: 0.004322
+HEAPSORT:  | OK      | execution time: 0.004284
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.005227
+INTROSORT: | OK      | execution time: 0.004662
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.001553
+TIMSORT:   | OK      | execution time: 0.002452
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.002288
+QSORT:     | OK      | execution time: 0.001533
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.001293
+PDQSORT:   | OK      | execution time: 0.000586
 ----------------------------------------------------------
-
+Tests/Test15.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.214237
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.188819
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.081261
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.070352
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.028339
+----------------------------------------------------------
+Tests/Test16.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.224564
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.189828
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.090055
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.107792
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.043443
+----------------------------------------------------------
+Tests/Test17.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.223711
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.190057
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.113725
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.091469
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.066225
+----------------------------------------------------------
 ALREADY SORTED DATA:
+for i in $(seq 0 1 17); do echo Tests/Test${i}ans.txt: && ./ST.x all Tests/Test${i}ans.txt < Tests/Test${i}ans.txt && echo "----------------------------------------------------------"; done 
 Tests/Test0ans.txt:
 N = 10
 HEAPSORT:  | OK      | execution time: 0.000002
 -----------|---------|--------------------------
 INTROSORT: | OK      | execution time: 0.000011
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000008
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000001
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000001
-----------------------------------------------------------
-Tests/Test1ans.txt:
-N = 100
-HEAPSORT:  | OK      | execution time: 0.000008
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000021
+TIMSORT:   | OK      | execution time: 0.000002
 -----------|---------|--------------------------
 QSORT:     | OK      | execution time: 0.000009
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000002
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000006
-----------------------------------------------------------
-Tests/Test2ans.txt:
-N = 32687
-HEAPSORT:  | OK      | execution time: 0.005161
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.007270
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000732
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000095
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.001947
-----------------------------------------------------------
-Tests/Test3ans.txt:
-N = 999997
-HEAPSORT:  | OK      | execution time: 0.208589
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.291732
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.027626
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.002981
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.090234
-----------------------------------------------------------
-Tests/Test4ans.txt:
-N = 100
-HEAPSORT:  | OK      | execution time: 0.000017
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000028
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000012
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000002
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000007
-----------------------------------------------------------
-Tests/Test5ans.txt:
-N = 1000
-HEAPSORT:  | OK      | execution time: 0.000103
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000149
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000053
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000004
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000036
-----------------------------------------------------------
-Tests/Test6ans.txt:
-N = 8267
-HEAPSORT:  | OK      | execution time: 0.001277
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.001683
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000206
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000026
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000608
-----------------------------------------------------------
-Tests/Test7ans.txt:
-N = 100
-HEAPSORT:  | OK      | execution time: 0.000009
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000021
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000009
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000001
------------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000006
-----------------------------------------------------------
-Tests/Test8ans.txt:
-N = 30
-HEAPSORT:  | OK      | execution time: 0.000003
------------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.000012
------------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000008
------------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000002
 -----------|---------|--------------------------
 PDQSORT:   | OK      | execution time: 0.000002
 ----------------------------------------------------------
+Tests/Test1ans.txt:
+N = 100
+HEAPSORT:  | OK      | execution time: 0.000011
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000023
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000002
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000012
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000007
+----------------------------------------------------------
+Tests/Test2ans.txt:
+N = 32687
+HEAPSORT:  | OK      | execution time: 0.005676
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.006338
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000086
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000764
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.001057
+----------------------------------------------------------
+Tests/Test3ans.txt:
+N = 999997
+HEAPSORT:  | OK      | execution time: 0.223104
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.285537
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.002744
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.031134
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.076246
+----------------------------------------------------------
+Tests/Test4ans.txt:
+N = 100
+HEAPSORT:  | OK      | execution time: 0.000009
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000018
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000002
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000010
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000005
+----------------------------------------------------------
+Tests/Test5ans.txt:
+N = 1000
+HEAPSORT:  | OK      | execution time: 0.000114
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000168
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000005
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000075
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000023
+----------------------------------------------------------
+Tests/Test6ans.txt:
+N = 8267
+HEAPSORT:  | OK      | execution time: 0.001600
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.002038
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000032
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000266
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.001363
+----------------------------------------------------------
+Tests/Test7ans.txt:
+N = 100
+HEAPSORT:  | OK      | execution time: 0.000012
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000024
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000002
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000011
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000008
+----------------------------------------------------------
+Tests/Test8ans.txt:
+N = 30
+HEAPSORT:  | OK      | execution time: 0.000004
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.000013
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.000003
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.000010
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.000003
+----------------------------------------------------------
 Tests/Test9ans.txt:
 N = 64000
-HEAPSORT:  | OK      | execution time: 0.011793
+HEAPSORT:  | OK      | execution time: 0.011393
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.015290
+INTROSORT: | OK      | execution time: 0.015655
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.001472
+TIMSORT:   | OK      | execution time: 0.000225
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000185
+QSORT:     | OK      | execution time: 0.001997
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.005404
+PDQSORT:   | OK      | execution time: 0.015503
 ----------------------------------------------------------
 Tests/Test10ans.txt:
 N = 138000
-HEAPSORT:  | OK      | execution time: 0.026565
+HEAPSORT:  | OK      | execution time: 0.027034
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.036330
+INTROSORT: | OK      | execution time: 0.032939
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.003595
+TIMSORT:   | OK      | execution time: 0.000391
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000397
+QSORT:     | OK      | execution time: 0.003411
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.011932
+PDQSORT:   | OK      | execution time: 0.039683
 ----------------------------------------------------------
 Tests/Test11ans.txt:
 N = 16032
-HEAPSORT:  | OK      | execution time: 0.002662
+HEAPSORT:  | OK      | execution time: 0.003324
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.003479
+INTROSORT: | OK      | execution time: 0.004019
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000361
+TIMSORT:   | OK      | execution time: 0.000052
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000047
+QSORT:     | OK      | execution time: 0.000436
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.001302
+PDQSORT:   | OK      | execution time: 0.003115
 ----------------------------------------------------------
 Tests/Test12ans.txt:
 N = 32032
-HEAPSORT:  | OK      | execution time: 0.005034
+HEAPSORT:  | OK      | execution time: 0.004987
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.007015
+INTROSORT: | OK      | execution time: 0.006417
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000823
+TIMSORT:   | OK      | execution time: 0.000084
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000093
+QSORT:     | OK      | execution time: 0.000715
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.002194
+PDQSORT:   | OK      | execution time: 0.002978
 ----------------------------------------------------------
 Tests/Test13ans.txt:
 N = 32000
-HEAPSORT:  | OK      | execution time: 0.000537
+HEAPSORT:  | OK      | execution time: 0.000550
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.002479
+INTROSORT: | OK      | execution time: 0.002001
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000752
+TIMSORT:   | OK      | execution time: 0.000084
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000102
+QSORT:     | OK      | execution time: 0.000789
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.000907
+PDQSORT:   | OK      | execution time: 0.000093
 ----------------------------------------------------------
 Tests/Test14ans.txt:
 N = 32000
-HEAPSORT:  | OK      | execution time: 0.004196
+HEAPSORT:  | OK      | execution time: 0.004544
 -----------|---------|--------------------------
-INTROSORT: | OK      | execution time: 0.006102
+INTROSORT: | OK      | execution time: 0.005612
 -----------|---------|--------------------------
-QSORT:     | OK      | execution time: 0.000753
+TIMSORT:   | OK      | execution time: 0.000084
 -----------|---------|--------------------------
-TIMSORT:   | OK      | execution time: 0.000095
+QSORT:     | OK      | execution time: 0.000752
 -----------|---------|--------------------------
-PDQSORT:   | OK      | execution time: 0.001259
+PDQSORT:   | OK      | execution time: 0.000297
+----------------------------------------------------------
+Tests/Test15ans.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.189354
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.240812
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.002696
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.028113
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.011346
+----------------------------------------------------------
+Tests/Test16ans.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.202164
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.264707
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.002596
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.027763
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.022304
+----------------------------------------------------------
+Tests/Test17ans.txt:
+N = 1000000
+HEAPSORT:  | OK      | execution time: 0.204236
+-----------|---------|--------------------------
+INTROSORT: | OK      | execution time: 0.286510
+-----------|---------|--------------------------
+TIMSORT:   | OK      | execution time: 0.003040
+-----------|---------|--------------------------
+QSORT:     | OK      | execution time: 0.028818
+-----------|---------|--------------------------
+PDQSORT:   | OK      | execution time: 0.035188
 ----------------------------------------------------------

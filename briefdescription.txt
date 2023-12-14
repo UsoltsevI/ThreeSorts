@@ -18,5 +18,5 @@ This option is for testing <sn> sort of all files from the Tests/
 - Usage option 8: make testo sn=<sort name> nt=<test num>
 This option is for testing <sn> using a file from the Tests/ under the number <nt>
 
-- Sorting options: heapsort, inssort, introsort, qsort, pdqsort
+- Sorting options: heapsort, inssort, introsort, timsort, qsort, pdqsort
 - to see usage examples, enter "make ems"
