@@ -33,7 +33,7 @@ HeapSort is the most memory-efficient, and at the same time has the asymptotics 
 The IntroSort algorithm combines three sorts at once: inssort, heapsort and qsort. On small data (when the length of the array becomes less than a certain threshold), inssort is activated. Heapsort starts working when the recursion depth of qsort becomes greater than logn. This helps the inssort algorithm to preserve the asymptotics of O(n logn).
 
 ## Pattern-defeating quick sort
-Pattern-defeating quicksort works effectively on data where there are many identical elements. For example, on the 14th test, where there are 32,000 data and always 5 accepted values, it outperforms qsort by about 20%. But, in contrast, on tests 9 and 10, where there is almost no duplicate data, pdqsort runs 2 times slower than qsort. This is due to the fact that there are quite a large number of additional checks.
+Pattern-defeating quicksort works effectively on data where there are many identical elements. For example, on the 14th test, where there are 32,000 data and always 5 accepted values, it outperforms qsort by about 20%. But, in contrast, on tests 9 and 10, where there is almost no duplicate data, pdqsort runs 2 times slower than qsort. This is due to the fact that there are quite a large number of additional checks. Also, a strong advantage over qsort is observed in very indicative tests from 14 to 19, where a different number of accepted values for variables for a million data. But on 20 and 3 tests, where there are 26,000 and 32,000 different values of variables, pdqsort is already starting to lose. And of course, it acts worse than already sorted data due to the fact that it does not have conditions that accelerate it when encountering already sorted data.
 
 ## Timsort
 Perhaps the most effective sorting from the presented list. It uses inssort on small data and merge sort on large data. There is also a balancing algorithm added, which significantly increases the efficiency of merge sort. It is stable, thus having an advantage over the rest. It also works by the asymptotics of O(n log n) in the worst case, and O(n) in the best.
@@ -50,6 +50,7 @@ I should note that this TimSort implementation is on average less efficient than
 - [Heapsort](https://en.wikipedia.org/wiki/Heapsort)
 - [Introsort](https://en.wikipedia.org/wiki/Introsort)
 - [Pattern-defeating quick sort](https://arxiv.org/pdf/2106.05123v1.pdf)
+- [Pdqsort (git)](https://github.com/orlp/pdqsort)
 - [TimSort](https://en.wikipedia.org/wiki/Timsort)
 
 ### Postscript

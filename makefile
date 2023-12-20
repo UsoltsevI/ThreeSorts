@@ -46,19 +46,19 @@ TimSort/timsort.o: TimSort/timsort.c
 SPLIT_LINES = "----------------------------------------------------------"
 
 testall:
-	for i in $$(seq 0 1 17); do echo Tests/Test$$i.txt: && ./ST.x all < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
+	for i in $$(seq 0 1 20); do echo Tests/Test$$i.txt: && ./ST.x all < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 17); do echo Tests/Test$${i}ans.txt: && ./ST.x all < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 20); do echo Tests/Test$${i}ans.txt: && ./ST.x all < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 testallans:
-	for i in $$(seq 0 1 17); do echo Tests/Test$$i.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
+	for i in $$(seq 0 1 20); do echo Tests/Test$$i.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 17); do echo Tests/Test$${i}ans.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 20); do echo Tests/Test$${i}ans.txt: && ./ST.x all Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 test:
-	for i in $$(seq 4 1 4); do echo -n "Tests/Test$$i.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 20); do echo -n "Tests/Test$$i.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$$i.txt && echo ${SPLIT_LINES}; done 
 	@echo 'ALREADY SORTED DATA:'
-	for i in $$(seq 0 1 0); do echo -n "Tests/Test$${i}ans.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
+	for i in $$(seq 0 1 20); do echo -n "Tests/Test$${i}ans.txt: | " && ./ST.x $$sn Tests/Test$${i}ans.txt < Tests/Test$${i}ans.txt && echo ${SPLIT_LINES}; done 
 
 testo:
 	@echo "Tests/Test$$i.txt:"
