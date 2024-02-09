@@ -18,6 +18,20 @@ void pint_data(void *arr, const size_t len) {
 	printf("\n");
 }
 
+void pint_data2(void *arr, const size_t len) {
+	int *arrint = (int *) arr;
+    int num = 0;
+
+	for (size_t i = 0; i < len; i++) {
+		printf("%d ", *(arrint + i));
+
+        if (*(arrint + i) == 0)
+            num++;
+    }
+	// printf("\n0num = %d", num);
+	printf("\n");
+}
+
 int check_data(void *mem, const size_t first, const size_t last, const size_t size_elem, int (*cmp)(const void *, const void *)) {
 	for (size_t i = first; i < last; i++)
 		if (cmp(mem + i * size_elem, mem + (i + 1) * size_elem) > 0) {
@@ -76,6 +90,70 @@ int check_part(const void *mem, const size_t len, const size_t left_bdr, const s
             incrt++;
             break;
         }
+    }
+
+    return !incrt;
+}
+
+int check_part_int_right(void *begin, void *end, void *pivot, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    int incrt = 0;
+    void *l = begin;
+    void *r = end  ;
+
+    printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+
+    while (l < pivot) {
+        if (cmp(l, pivot) > 0) {
+            printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+            printf("case 1: %d >p %d in pos %ld\n", *((int *) l), *((int *) pivot), (l - begin) / size_elem);
+            incrt++;
+            break;
+        }
+
+        l += size_elem;
+    }
+
+    while (r > pivot) {
+        if (cmp(pivot, r) >= 0) {
+            printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+            printf("case 2: %d p>= %d in pos %ld\n", *((int *) pivot), *((int *) r), (r - begin) / size_elem);
+            incrt++;
+            break;
+        }
+
+        r -= size_elem;
+    }
+
+    return !incrt;
+}
+
+int check_part_int_left(void *begin, void *end, void *pivot, const size_t size_elem, int (*cmp)(const void *, const void *)) {
+    int incrt = 0;
+    void *l = begin;
+    void *r = end  ;
+
+    printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+
+    while (l < pivot) {
+        if (cmp(l, pivot) >= 0) {
+            printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+            printf("case 1: %d <=p %d in pos %ld\n", *((int *) l), *((int *) pivot), (l - begin) / size_elem);
+            incrt++;
+            break;
+        }
+
+        l += size_elem;
+    }
+
+    while (r > pivot) {
+        if (cmp(pivot, r) > 0) {
+            printf("pvt = %d, pp = %ld\n", *((int *) pivot), (pivot - begin) / size_elem);
+            printf("case 2: %d p< %d in pos %ld\n", *((int *) pivot), *((int *) r), (r - begin) / size_elem);
+            incrt++;
+            break;
+        }
+
+        r -= size_elem;
     }
 
     return !incrt;
